@@ -1,0 +1,18 @@
+{
+  "name": "ng-flatpickr",
+  "version": "0.0.0",
+  "description": "angularjs datepicker directive",
+  "main": "ng-flatpickr.js",
+  "repository": "attrs/ng-flatpickr",
+  "author": "joje <joje.attrs@gmail.com>",
+  "homepage": "https://github.com/attrs/ng-flatpickr",
+  "license": "MIT",
+  "files": [
+    "*.js",
+    "LICENSE",
+    "README.md"
+  ],
+  "dependencies": {
+    "flatpickr": "^2.0.8"
+  }
+}
