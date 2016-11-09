@@ -8,6 +8,7 @@
   "homepage": "https://github.com/attrs/ng-flatpickr",
   "license": "MIT",
   "files": [
+    "locales",
     "*.js",
     "LICENSE",
     "README.md"
