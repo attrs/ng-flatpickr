@@ -15,5 +15,9 @@
   ],
   "dependencies": {
     "flatpickr": "^2.0.8"
+  },
+  "devDependencies": {
+    "css-loader": "^0.26.0",
+    "style-loader": "^0.13.1"
   }
 }
