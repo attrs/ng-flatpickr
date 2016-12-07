@@ -12,7 +12,7 @@ exports.months = {
 };
 
 exports.ordinal = function(nth) {
-  const s = nth % 100;
+  var s = nth % 100;
   if (s > 3 && s < 21) return "è";
   switch (s % 10) {
     case 1: return "r";
