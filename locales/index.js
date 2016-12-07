@@ -33,3 +33,4 @@ exports.tr = require('./flatpickr.l10n.tr.js');
 exports.uk = require('./flatpickr.l10n.uk.js');
 exports.vn = require('./flatpickr.l10n.vn.js');
 exports.zh = require('./flatpickr.l10n.zh.js');
+exports.en = require('./flatpickr.l10n.en.js');
