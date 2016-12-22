@@ -26,10 +26,10 @@ module.exports = angular.module('ngFlatpickr', [])
 module.exports.locale = function(locale) {
   var locales = require('./locales/');
   if( typeof locale == 'string' ) {
-    lacale = locales[locale] || locales[locale.split('-')[0]];
-    if( !lacale ) return console.error('[ng-flatpickr] unsupported locale', locale);
+    locale = locales[locale] || locales[locale.split('-')[0]];
+    if( !locale ) return console.warn('[ng-flatpickr] unsupported locale', locale);
   }
   
-  if( typeof lacale != 'object' ) return console.error('[ng-flatpickr] locale must be a string or object');
-  flatpickr.localize(lacale);
+  if( typeof locale !== 'object' ) return console.warn('[ng-flatpickr] locale must be a string or object', locale);
+  flatpickr.localize(locale);
 };
