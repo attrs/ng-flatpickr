@@ -9,14 +9,29 @@ function diff(a, b) {
   return Math.floor((utc2 - utc1) / _MS_PER_DAY);
 }
 
+function ensure(scope, done) {
+  if( scope.$$phase == '$apply' || scope.$$phase == '$digest' || scope.$root.$$phase == '$apply' || scope.$root.$$phase == '$digest' ) {
+    done(null, scope);
+  } else {
+    scope.$apply(function() {
+      done(null, scope);
+    });
+  }
+}
+
 module.exports = angular.module('ngFlatpickr', [])
 .directive('datepicker', function() {
   return {
     require: '?ngModel',
     restrict : 'A',
     link : function(scope, element, attrs, ngModel) {
-      var range = 'range' in attrs ? true : false;
-      var multiple = 'multiple' in attrs ? true : false;
+      var range = 'range' in attrs;
+      var multiple = 'multiple' in attrs;
+      var valueType = attrs.valueType;
+      var ngDateSelect = attrs.ngDateSelect;
+      var ngDateChange = attrs.ngDateChange;
+      var ngClose = attrs.ngClose;
+      var ngDateFilter = attrs.ngDateFilter;
       var disables = [];
       
       if( 'disablePastDays' in attrs ) {
@@ -31,29 +46,76 @@ module.exports = angular.module('ngFlatpickr', [])
         });
       }
       
-      new flatpickr(element[0], {
+      if( ngDateFilter ) {
+        disables.push(function(date) {
+          return scope.$eval(ngDateFilter, {$picker: picker, $date: date});
+        });
+      }
+      
+      var options = {
         allowInput: true,
-        mode: range ? 'range' : (multiple ? 'multiple' : ''),
-        inline: 'inline' in attrs ? true : false,
-        weekNumbers: 'weekNumbers' in attrs ? true : false,
+        inline: 'inline' in attrs,
+        weekNumbers: 'weekNumbers' in attrs,
         disable: disables,
-        onChange: function(dateObject, dateString) {
-          console.log('dateObject', dateObject, dateString);
-          if( scope.$root.$$phase != '$digest' && scope.$root.$$phase != '$apply' ) {
-            scope.$apply(function() {
+        onChange: function(dateObject, dateString, picker) {
+          if( ngDateSelect ) {
+            scope.$eval(ngDateSelect, {$picker: picker, $date: dateObject && dateObject[dateObject.length - 1]});
+          }
+          
+          if( !multiple && !range ) dateObject = dateObject[0];
+          
+          if( multiple ) return;
+          if( range && (!dateObject || dateObject.length < 2) ) return;
+          
+          if( ngDateChange ) {
+            scope.$eval(ngDateChange, {$picker: picker, $date: dateObject, $value: dateString});
+          }
+          
+          ensure(scope, function() {
+            if( valueType === 'date' ) {
               ngModel.$setViewValue(dateObject);
+            } else {
+              ngModel.$setViewValue(dateString);
+            }
+          });
+          
+          if( !multiple ) picker.close();
+        },
+        onClose: function(dateObject, dateString, picker) {
+          if( !multiple && !range ) dateObject = dateObject[0];
+          
+          if( multiple ) {
+            if( ngDateChange ) {
+              scope.$eval(ngDateChange, {$picker: picker, $date: dateObject, $value: dateString});
+            }
+            
+            ensure(scope, function() {
+              if( valueType === 'date' ) {
+                ngModel.$setViewValue(dateObject);
+              } else {
+                ngModel.$setViewValue(dateString);
+              }
             });
-          } else {
-            ngModel.$setViewValue(dateObject);
+          }
+          
+          if( ngClose ) {
+            scope.$eval(ngClose, {$picker: picker, $date: dateObject, $value: dateString});
           }
         }
-      });
+      };
+      
+      if( range || multiple ) {
+        options.mode = range ? 'range' : 'multiple';
+      }
+      
+      var picker = new flatpickr(element[0], options);
     }
   };
 });
 
 module.exports.locale = function(locale) {
   var locales = require('./locales/');
+  console.log('locale', locale, locales);
   if( typeof locale == 'string' ) {
     locale = locales[locale] || locales[locale.split('-')[0]];
     if( !locale ) return console.warn('[ng-flatpickr] unsupported locale', locale);
