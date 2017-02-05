@@ -115,7 +115,6 @@ module.exports = angular.module('ngFlatpickr', [])
 
 module.exports.locale = function(locale) {
   var locales = require('./locales/');
-  console.log('locale', locale, locales);
   if( typeof locale == 'string' ) {
     locale = locales[locale] || locales[locale.split('-')[0]];
     if( !locale ) return console.warn('[ng-flatpickr] unsupported locale', locale);
