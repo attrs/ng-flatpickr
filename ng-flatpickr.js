@@ -32,6 +32,8 @@ module.exports = angular.module('ngFlatpickr', [])
       var ngDateChange = attrs.ngDateChange;
       var ngClose = attrs.ngClose;
       var ngDateFilter = attrs.ngDateFilter;
+      var ngMonthChange = attrs.ngMonthChange;
+      var ngYearChange = attrs.ngYearChange;
       var disables = [];
       
       if( 'disablePastDays' in attrs ) {
@@ -57,9 +59,23 @@ module.exports = angular.module('ngFlatpickr', [])
         inline: 'inline' in attrs,
         weekNumbers: 'weekNumbers' in attrs,
         disable: disables,
+        onYearChange: function() {
+          if( ngYearChange ) {
+            scope.$eval(ngYearChange, {$picker: picker, $year: picker.currentYear, $month: picker.currentMonth });
+          }
+          
+          if( ngMonthChange ) {
+            scope.$eval(ngMonthChange, {$picker: picker, $year: picker.currentYear, $month: picker.currentMonth });
+          }
+        },
+        onMonthChange: function() {
+          if( ngMonthChange ) {
+            scope.$eval(ngMonthChange, {$picker: picker, $year: picker.currentYear, $month: picker.currentMonth });
+          }
+        },
         onChange: function(dateObject, dateString, picker) {
           if( ngDateSelect ) {
-            scope.$eval(ngDateSelect, {$picker: picker, $date: dateObject && dateObject[dateObject.length - 1]});
+            scope.$eval(ngDateSelect, {$picker: picker, $date: dateObject && dateObject[dateObject.length - 1], $value: dateString});
           }
           
           if( !multiple && !range ) dateObject = dateObject[0];
@@ -71,13 +87,17 @@ module.exports = angular.module('ngFlatpickr', [])
             scope.$eval(ngDateChange, {$picker: picker, $date: dateObject, $value: dateString});
           }
           
-          ensure(scope, function() {
-            if( valueType === 'date' ) {
-              ngModel.$setViewValue(dateObject);
-            } else {
-              ngModel.$setViewValue(dateString);
-            }
-          });
+          if( ngModel ) {
+            ensure(scope, function() {
+              if( valueType === 'date' ) {
+                ngModel.$setViewValue(dateObject);
+              } else {
+                ngModel.$setViewValue(dateString);
+              }
+              
+              ngModel.$render();
+            });
+          }
           
           if( !multiple ) picker.close();
         },
@@ -89,13 +109,17 @@ module.exports = angular.module('ngFlatpickr', [])
               scope.$eval(ngDateChange, {$picker: picker, $date: dateObject, $value: dateString});
             }
             
-            ensure(scope, function() {
-              if( valueType === 'date' ) {
-                ngModel.$setViewValue(dateObject);
-              } else {
-                ngModel.$setViewValue(dateString);
-              }
-            });
+            if( ngModel ) {
+              ensure(scope, function() {
+                if( valueType === 'date' ) {
+                  ngModel.$setViewValue(dateObject);
+                } else {
+                  ngModel.$setViewValue(dateString);
+                }
+              
+                ngModel.$render();
+              });
+            }
           }
           
           if( ngClose ) {
