@@ -24,6 +24,7 @@ module.exports = angular.module('ngFlatpickr', [])
   return {
     require: '?ngModel',
     restrict : 'A',
+    scope: true,
     link : function(scope, element, attrs, ngModel) {
       var range = 'range' in attrs;
       var multiple = 'multiple' in attrs;
@@ -79,8 +80,6 @@ module.exports = angular.module('ngFlatpickr', [])
           }
           
           if( !multiple && !range ) dateObject = dateObject[0];
-          
-          if( multiple ) return;
           if( range && (!dateObject || dateObject.length < 2) ) return;
           
           if( ngDateChange ) {
@@ -133,6 +132,10 @@ module.exports = angular.module('ngFlatpickr', [])
       }
       
       var picker = new flatpickr(element[0], options);
+      
+      scope.picker = function() {
+        return picker;
+      };
     }
   };
 });
