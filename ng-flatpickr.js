@@ -64,10 +64,6 @@ module.exports = angular.module('ngFlatpickr', [])
           if( ngYearChange ) {
             scope.$eval(ngYearChange, {$picker: picker, $year: picker.currentYear, $month: picker.currentMonth });
           }
-          
-          if( ngMonthChange ) {
-            scope.$eval(ngMonthChange, {$picker: picker, $year: picker.currentYear, $month: picker.currentMonth });
-          }
         },
         onMonthChange: function() {
           if( ngMonthChange ) {
