@@ -16,6 +16,9 @@
   "dependencies": {
     "flatpickr": "^2.4.8"
   },
+  "peerDependencies": {
+    "angular": "1.x"
+  },
   "devDependencies": {
     "css-loader": "^0.26.4",
     "style-loader": "^0.13.2"
