@@ -14,13 +14,13 @@
     "README.md"
   ],
   "dependencies": {
-    "flatpickr": "^2.4.8"
+    "flatpickr": "^2.6.3"
   },
   "peerDependencies": {
     "angular": "1.x"
   },
   "devDependencies": {
-    "css-loader": "^0.26.4",
-    "style-loader": "^0.13.2"
+    "css-loader": "^0.28.2",
+    "style-loader": "^0.18.1"
   }
 }

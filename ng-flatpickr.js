@@ -55,6 +55,7 @@ module.exports = angular.module('ngFlatpickr', [])
       }
       
       var options = {
+        static: 'static' in attrs,
         allowInput: true,
         inline: 'inline' in attrs,
         weekNumbers: 'weekNumbers' in attrs,
