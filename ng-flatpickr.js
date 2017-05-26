@@ -131,6 +131,10 @@ module.exports = angular.module('ngFlatpickr', [])
       element[0].picker = function() {
         return picker;
       };
+      
+      scope.$on('$destroy', function() {
+        picker && picker.destroy();
+      });
     }
   };
 });
