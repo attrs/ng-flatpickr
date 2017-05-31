@@ -72,16 +72,20 @@ function directive() {
           }
         },
         onChange: function(dateObject, dateString, picker) {
-          if( ngDateSelect ) {
-            scope.$eval(ngDateSelect, {$picker: picker, $date: dateObject && dateObject[dateObject.length - 1], $value: dateString});
-          }
-          
-          if( !multiple && !range ) dateObject = dateObject[0];
-          if( range && (!dateObject || dateObject.length < 2) ) return;
-          
-          if( ngDateChange ) {
-            scope.$eval(ngDateChange, {$picker: picker, $date: dateObject, $value: dateString});
-          }
+          var apply = function() {
+            if( ngDateSelect ) {
+              scope.$eval(ngDateSelect, {$picker: picker, $date: dateObject && dateObject[dateObject.length - 1], $value: dateString});
+            }
+            
+            if( !multiple && !range ) dateObject = dateObject[0];
+            if( range && (!dateObject || dateObject.length < 2) ) return;
+            
+            if( ngDateChange ) {
+              scope.$eval(ngDateChange, {$picker: picker, $date: dateObject, $value: dateString});
+            }
+            
+            if( !multiple ) picker.close();
+          };
           
           if( ngModel ) {
             ensure(scope, function() {
@@ -92,19 +96,16 @@ function directive() {
               }
               
               ngModel.$render();
+              apply();
             });
+          } else {
+            apply();
           }
-          
-          if( !multiple ) picker.close();
         },
         onClose: function(dateObject, dateString, picker) {
           if( !multiple && !range ) dateObject = dateObject[0];
           
           if( multiple ) {
-            if( ngDateChange ) {
-              scope.$eval(ngDateChange, {$picker: picker, $date: dateObject, $value: dateString});
-            }
-            
             if( ngModel ) {
               ensure(scope, function() {
                 if( valueType === 'date' ) {
@@ -115,6 +116,10 @@ function directive() {
                 
                 ngModel.$render();
               });
+            }
+            
+            if( ngDateChange ) {
+              scope.$eval(ngDateChange, {$picker: picker, $date: dateObject, $value: dateString});
             }
           }
           
