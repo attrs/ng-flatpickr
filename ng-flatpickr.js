@@ -1,4 +1,5 @@
 var flatpickr = require('flatpickr');
+var browserlocale = require('browser-locale')();
 require('flatpickr/dist/flatpickr.min.css');
 
 var _MS_PER_DAY = 1000 * 60 * 60 * 24;
@@ -19,8 +20,7 @@ function ensure(scope, done) {
   }
 }
 
-module.exports = angular.module('ngFlatpickr', [])
-.directive('ngFlatpickr', function() {
+function directive() {
   return {
     require: '?ngModel',
     restrict : 'A',
@@ -140,9 +140,9 @@ module.exports = angular.module('ngFlatpickr', [])
       };
     }
   };
-});
+}
 
-module.exports.locale = function(locale) {
+function locale(locale) {
   var locales = require('./locales/');
   if( typeof locale == 'string' ) {
     locale = locales[locale] || locales[locale.split('-')[0]];
@@ -151,4 +151,11 @@ module.exports.locale = function(locale) {
   
   if( typeof locale !== 'object' ) return console.warn('[ng-flatpickr] locale must be a string or object', locale);
   flatpickr.localize(locale);
-};
+}
+
+locale(browserlocale);
+
+module.exports = angular.module('ngFlatpickr', [])
+.directive('ngFlatpickr', directive);
+
+module.exports.locale = locale;
