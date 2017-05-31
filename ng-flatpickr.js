@@ -20,10 +20,11 @@ function ensure(scope, done) {
 }
 
 module.exports = angular.module('ngFlatpickr', [])
-.directive('datepicker', function() {
+.directive('ngFlatpickr', function() {
   return {
     require: '?ngModel',
     restrict : 'A',
+    scope: true,
     link : function(scope, element, attrs, ngModel) {
       var range = 'range' in attrs;
       var multiple = 'multiple' in attrs;
@@ -128,13 +129,15 @@ module.exports = angular.module('ngFlatpickr', [])
       }
       
       var picker = new flatpickr(element[0], options);
-      element[0].picker = function() {
-        return picker;
-      };
       
       scope.$on('$destroy', function() {
         picker && picker.destroy();
       });
+      
+      scope.picker = picker;
+      scope.redraw = function() {
+        picker.redraw();
+      };
     }
   };
 });
