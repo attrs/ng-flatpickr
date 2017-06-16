@@ -35,6 +35,8 @@ function directive() {
       var ngDateFilter = attrs.ngDateFilter;
       var ngMonthChange = attrs.ngMonthChange;
       var ngYearChange = attrs.ngYearChange;
+      var autoClose = 'autoClose' in attrs && attrs.autoClose != 'false';
+      var enableTime = 'dataEenableTime' in attrs && attrs.dataEnableTime != 'false';
       var disables = [];
       
       if( 'disablePastDays' in attrs ) {
@@ -84,7 +86,7 @@ function directive() {
               scope.$eval(ngDateChange, {$picker: picker, $date: dateObject, $value: dateString});
             }
             
-            if( !multiple ) picker.close();
+            if( autoClose && !enableTime && !multiple ) picker.close();
           };
           
           if( ngModel ) {
