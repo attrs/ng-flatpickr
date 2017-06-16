@@ -35,6 +35,8 @@ module.exports = angular.module('ngFlatpickr', [])
       var ngMonthChange = attrs.ngMonthChange;
       var ngYearChange = attrs.ngYearChange;
       var disables = [];
+      var autoClose = 'autoClose' in attrs && attrs.autoClose != 'false';
+      var enableTime = 'dataEenableTime' in attrs && attrs.dataEnableTime != 'false';
       
       if( 'disablePastDays' in attrs ) {
         disables.push(function(date) {
@@ -94,7 +96,7 @@ module.exports = angular.module('ngFlatpickr', [])
             });
           }
           
-          if( !multiple ) picker.close();
+          if( autoClose && !enableTime && !multiple ) picker.close();
         },
         onClose: function(dateObject, dateString, picker) {
           if( !multiple && !range ) dateObject = dateObject[0];
