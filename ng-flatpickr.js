@@ -24,7 +24,9 @@ function directive() {
   return {
     require: '?ngModel',
     restrict : 'A',
-    scope: true,
+    scope: {
+      model: '=ngModel'
+    },
     link : function(scope, element, attrs, ngModel) {
       var range = 'range' in attrs;
       var multiple = 'multiple' in attrs;
@@ -91,6 +93,7 @@ function directive() {
           
           if( ngModel ) {
             ensure(scope, function() {
+              console.log('change', dateString);
               if( valueType === 'date' ) {
                 ngModel.$setViewValue(dateObject);
               } else {
