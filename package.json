@@ -1,6 +1,6 @@
 {
   "name": "ng-flatpickr",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "angularjs datepicker directive",
   "main": "ng-flatpickr.js",
   "repository": "attrs/ng-flatpickr",
