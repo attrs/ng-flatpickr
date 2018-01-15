@@ -15,14 +15,20 @@ angular.module('app', ['ngFlatpickr'])...
 ```
 
 ```html
-<input type="text" datepicker>
-<input type="text" datepicker data-date-format="Y-m-d">
-<input type="text" datepicker range>
-<input type="text" datepicker multiple>
-<input type="text" datepicker disable-past-days>
-<input type="text" datepicker disable-after-days>
-<input type="text" datepicker ng-date-filter="dateFilter($date)">
-<input type="text" datepicker range data-date-format="Y-m-d" ng-model="date">
+<input type="text" ng-flatpickr>
+<input type="text" ng-flatpickr data-date-format="Y-m-d">
+<input type="text" ng-flatpickr data-date-format="Y-m-d H:i">
+<input type="text" ng-flatpickr range>
+<input type="text" ng-flatpickr multiple>
+<input type="text" ng-flatpickr disable-past-days>
+<input type="text" ng-flatpickr disable-after-days>
+<input type="text" ng-flatpickr ng-date-filter="dateFilter($date)">
+<input type="text" ng-flatpickr ng-model="date">
+<input type="text" ng-flatpickr enable-time">
+<input type="text" ng-flatpickr time24hr">
+<input type="text" ng-flatpickr minute-increment="30"">
+<input type="text" ng-flatpickr time24hr">
+<input type="text" ng-flatpickr no-calendar">
 
-<input type="text" datepicker range disable-past-days data-date-format="Y-m-d" ng-model="date" ng-date-change="dateChanged($date, $value, $picker)" ng-date-select="dateSelected($date)" ng-date-filter="dateFilter($date)">
+<input type="text" ng-flatpickr range disable-past-days data-date-format="Y-m-d" ng-model="date" ng-date-change="dateChanged($date, $value, $picker)" ng-date-select="dateSelected($date)" ng-date-filter="dateFilter($date)">
 ```
