@@ -24,9 +24,6 @@ function directive() {
   return {
     require: '?ngModel',
     restrict : 'A',
-    scope: {
-      model: '=ngModel'
-    },
     link : function(scope, element, attrs, ngModel) {
       var range = 'range' in attrs;
       var multiple = 'multiple' in attrs;
@@ -39,6 +36,12 @@ function directive() {
       var ngYearChange = attrs.ngYearChange;
       var autoClose = 'autoClose' in attrs && attrs.autoClose != 'false';
       var enableTime = 'dataEenableTime' in attrs && attrs.dataEnableTime != 'false';
+      var noCalendar = 'noCalendar' in attrs || attrs.noCalendar == 'true';
+      var enableTime = 'enableTime' in attrs || attrs.enableTime == 'true';
+      var time24hr = 'time24hr' in attrs || attrs.time24hr == 'true';
+      var minuteIncrement = +attrs.minuteIncrement || 10;
+      var prevArrow = attrs.prevArrow;
+      var nextArrow = attrs.nextArrow;
       var disables = [];
       
       if( 'disablePastDays' in attrs ) {
@@ -65,6 +68,10 @@ function directive() {
         inline: 'inline' in attrs,
         weekNumbers: 'weekNumbers' in attrs,
         disable: disables,
+        enableTime: enableTime,
+        minuteIncrement: minuteIncrement,
+        noCalendar: noCalendar,
+        time_24hr: time24hr,
         onYearChange: function() {
           if( ngYearChange ) {
             scope.$eval(ngYearChange, {$picker: picker, $year: picker.currentYear, $month: picker.currentMonth });
@@ -93,7 +100,6 @@ function directive() {
           
           if( ngModel ) {
             ensure(scope, function() {
-              console.log('change', dateString);
               if( valueType === 'date' ) {
                 ngModel.$setViewValue(dateObject);
               } else {
@@ -137,6 +143,9 @@ function directive() {
       if( range || multiple ) {
         options.mode = range ? 'range' : 'multiple';
       }
+      
+      if( prevArrow ) options.prevArrow = prevArrow;
+      if( nextArrow ) options.nextArrow = nextArrow;
       
       var picker = new flatpickr(element[0], options);
       
